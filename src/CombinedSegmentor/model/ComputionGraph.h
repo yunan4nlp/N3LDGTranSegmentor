@@ -93,7 +93,6 @@ public:
 		}
 
 		globalNodes.forward(_pcg, pCharacters);
-		_pcg->compute();
 		//second step, build graph
 		static vector<CStateItem*> lastStates;
 		static CStateItem* pGenerator;
@@ -132,7 +131,7 @@ public:
 				_pcg->compute();
 				scored_action.item = pGenerator;
 				for (int idy = 0; idy < actions.size(); ++idy) {
-                    scored_action.ac.set(actions[idy]); //TODO:
+					scored_action.ac.set(actions[idy]); //TODO:
 					if (pGenerator->_bGold && actions[idy] == answer){
 						scored_action.bGold = true; 
 						correct_action_scored = true;
