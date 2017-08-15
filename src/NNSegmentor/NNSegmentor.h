@@ -8,7 +8,7 @@
 #ifndef SRC_PARSER_H_
 #define SRC_PARSER_H_
 
-#include "N3L.h"
+#include "N3LDG.h"
 
 #include "Driver.h"
 #include "Options.h"

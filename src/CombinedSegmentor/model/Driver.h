@@ -67,10 +67,8 @@ public:
 		for (int idx = 0; idx < num; idx++) {
 			_builder[idx].forward(&sentences[idx], &goldACs[idx]);
 			_eval.overall_label_count += goldACs[idx].size();
-
 		}
 		cost += loss_google(num);
-
 		_cg.backward();
 		return cost;
 	}
@@ -78,7 +76,6 @@ public:
 	void decode(const std::vector<string>& sentence, vector<string>& result) {
 		_cg.clearValue();
 		_builder[0].forward(&sentence);
-		_cg.compute();
 		predict(result);
 	}
 

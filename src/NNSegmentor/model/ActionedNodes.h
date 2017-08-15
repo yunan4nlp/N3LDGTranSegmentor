@@ -30,20 +30,20 @@ struct ActionedNodes {
 
 	vector<SPAddNode> outputs;
 
-	Node bucket;
+	BucketNode bucket;
 
 public:
-	inline void initial(ModelParams& params, HyperParams& hyparams, AlignedMemoryPool* mem){
+	inline void initial(ModelParams& params, HyperParams& hyparams){
 		//neural features
 		last_word_input.setParam(&(params.word_table));
 		last2_word_input.setParam(&(params.word_table));
 		word_conv.setParam(&(params.word_conv));
-		word_lstm.init(&(params.word_lstm), hyparams.dropProb, mem); //already allocated here
+		word_lstm.init(&(params.word_lstm), hyparams.dropProb); //already allocated here
 
 		last_action_input.setParam(&(params.action_table));
 		last2_action_input.setParam(&(params.action_table));
 		action_conv.setParam(&(params.action_conv));
-		action_lstm.init(&(params.action_lstm), hyparams.dropProb, mem); //already allocated here
+		action_lstm.init(&(params.action_lstm), hyparams.dropProb); //already allocated here
 
 		sep_hidden.setParam(&(params.sep_hidden));
 		app_hidden.setParam(&(params.app_hidden));
@@ -54,24 +54,23 @@ public:
 		outputs.resize(hyparams.action_num);
 
 		//allocate node memories
-		last_word_input.init(hyparams.word_dim, hyparams.dropProb, mem);
-		last2_word_input.init(hyparams.word_dim, hyparams.dropProb, mem);
-		word_conv.init(hyparams.word_hidden_dim, hyparams.dropProb, mem);
+		last_word_input.init(hyparams.word_dim, hyparams.dropProb);
+		last2_word_input.init(hyparams.word_dim, hyparams.dropProb);
+		word_conv.init(hyparams.word_hidden_dim, hyparams.dropProb);
 
-		last_action_input.init(hyparams.action_dim, hyparams.dropProb, mem);
-		last2_action_input.init(hyparams.action_dim, hyparams.dropProb, mem);
-		action_conv.init(hyparams.action_hidden_dim, hyparams.dropProb, mem);
+		last_action_input.init(hyparams.action_dim, hyparams.dropProb);
+		last2_action_input.init(hyparams.action_dim, hyparams.dropProb);
+		action_conv.init(hyparams.action_hidden_dim, hyparams.dropProb);
 		
-		sep_hidden.init(hyparams.sep_hidden_dim, -1, mem);
-		app_hidden.init(hyparams.app_hidden_dim, -1, mem);
-		sep_score.init(1, -1, mem);
-		app_score.init(1, -1, mem);
+		sep_hidden.init(hyparams.sep_hidden_dim, -1);
+		app_hidden.init(hyparams.app_hidden_dim, -1);
+		sep_score.init(1, -1);
+		app_score.init(1, -1);
 		
-		bucket.init(hyparams.char_lstm_dim, -1, mem);
-        bucket.set_bucket();
+		bucket.init(hyparams.char_lstm_dim, -1);
 		
 		for (int idx = 0; idx < hyparams.action_num; idx++) {
-			outputs[idx].init(1, -1, mem);
+			outputs[idx].init(1, -1);
 		}
 	}
 
@@ -93,8 +92,18 @@ public:
 		word_conv.forward(cg, &last2_word_input, &last_word_input);
 		word_lstm.forward(cg, &word_conv, atomFeat.p_word_lstm);
 
-		PNode P_char_left_lstm = atomFeat.next_position >= 0 ? &(atomFeat.p_char_left_lstm->_hiddens[atomFeat.next_position]) : &bucket;
-		PNode P_char_right_lstm = atomFeat.next_position >= 0 ? &(atomFeat.p_char_right_lstm->_hiddens[atomFeat.next_position]) : &bucket;
+		bucket.forward(cg, 0);
+		PNode P_char_left_lstm, P_char_right_lstm;
+		if (atomFeat.next_position >= 0) {
+			P_char_left_lstm = &(atomFeat.p_char_left_lstm->_hiddens[atomFeat.next_position]);
+			P_char_right_lstm = &(atomFeat.p_char_right_lstm->_hiddens[atomFeat.next_position]);
+		}
+		else {
+			P_char_left_lstm = &bucket;
+			P_char_right_lstm = &bucket;
+		}
+		//PNode P_char_left_lstm = atomFeat.next_position >= 0 ? &(atomFeat.p_char_left_lstm->_hiddens[atomFeat.next_position]) : &bucket;
+		//PNode P_char_right_lstm = atomFeat.next_position >= 0 ? &(atomFeat.p_char_right_lstm->_hiddens[atomFeat.next_position]) : &bucket;
 
 
 		for (int idx = 0; idx < ac_num; idx++){

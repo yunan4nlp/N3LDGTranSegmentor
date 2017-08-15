@@ -1,7 +1,7 @@
 #ifndef SRC_HyperParams_H_
 #define SRC_HyperParams_H_
 
-#include "N3L.h"
+#include "N3LDG.h"
 #include "Options.h"
 
 using namespace nr;
@@ -10,6 +10,7 @@ using namespace std;
 struct HyperParams{
 	//required
 	int beam;
+	int batch;
 	int maxlength;
 	int action_num;
 	dtype delta;
@@ -57,6 +58,7 @@ public:
 		//please specify dictionary outside
 		//please sepcify char_dim, word_dim and action_dim outside.
 		beam = opt.beam;
+		batch = opt.batchSize;
 		delta = opt.delta;
 		bAssigned = true;
 

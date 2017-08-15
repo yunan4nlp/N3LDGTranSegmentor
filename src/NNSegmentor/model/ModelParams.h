@@ -38,23 +38,23 @@ public:
 
 
 public:
-	bool initial(HyperParams& opts, AlignedMemoryPool* mem){
+	bool initial(HyperParams& opts){
 		// some model parameters should be initialized outside
 		if (words.size() <= 0 || chars.size() <= 0){
 			return false;
 		}
 		//neural features
-		char_tanh_conv.initial(opts.char_hidden_dim, opts.char_window_dim, true, mem);
-		char_left_lstm.initial(opts.char_lstm_dim, opts.char_hidden_dim, mem); //left lstm
-		char_right_lstm.initial(opts.char_lstm_dim, opts.char_hidden_dim, mem); //right lstm
-		word_conv.initial(opts.word_hidden_dim, opts.word_dim, opts.word_dim, true, mem);
-		word_lstm.initial(opts.word_lstm_dim, opts.word_hidden_dim, mem);
-		action_conv.initial(opts.action_hidden_dim, opts.action_dim, opts.action_dim, true, mem);
-		action_lstm.initial(opts.action_lstm_dim, opts.action_hidden_dim, mem);
-		sep_hidden.initial(opts.sep_hidden_dim, opts.char_lstm_dim, opts.char_lstm_dim, opts.word_lstm_dim, opts.action_lstm_dim, true, mem);
-		app_hidden.initial(opts.app_hidden_dim, opts.char_lstm_dim, opts.char_lstm_dim, opts.action_lstm_dim, true, mem);
-		sep_score.initial(1, opts.sep_hidden_dim, false, mem);
-		app_score.initial(1, opts.app_hidden_dim, false, mem);
+		char_tanh_conv.initial(opts.char_hidden_dim, opts.char_window_dim, true);
+		char_left_lstm.initial(opts.char_lstm_dim, opts.char_hidden_dim); //left lstm
+		char_right_lstm.initial(opts.char_lstm_dim, opts.char_hidden_dim); //right lstm
+		word_conv.initial(opts.word_hidden_dim, opts.word_dim, opts.word_dim, true);
+		word_lstm.initial(opts.word_lstm_dim, opts.word_hidden_dim);
+		action_conv.initial(opts.action_hidden_dim, opts.action_dim, opts.action_dim, true);
+		action_lstm.initial(opts.action_lstm_dim, opts.action_hidden_dim);
+		sep_hidden.initial(opts.sep_hidden_dim, opts.char_lstm_dim, opts.char_lstm_dim, opts.word_lstm_dim, opts.action_lstm_dim, true);
+		app_hidden.initial(opts.app_hidden_dim, opts.char_lstm_dim, opts.char_lstm_dim, opts.action_lstm_dim, true);
+		sep_score.initial(1, opts.sep_hidden_dim, false);
+		app_score.initial(1, opts.app_hidden_dim, false);
 
 		return true;
 	}

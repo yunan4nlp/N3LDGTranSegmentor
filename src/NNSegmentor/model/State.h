@@ -49,8 +49,8 @@ public:
 		clear();
 	}
 
-	void initial(ModelParams& params, HyperParams& hyparams, AlignedMemoryPool* mem) {
-		_nextscores.initial(params, hyparams, mem);
+	void initial(ModelParams& params, HyperParams& hyparams) {
+		_nextscores.initial(params, hyparams);
 	}
 
 	void setInput(const std::vector<std::string>* pCharacters) {

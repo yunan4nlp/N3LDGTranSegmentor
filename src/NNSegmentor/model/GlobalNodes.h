@@ -33,7 +33,7 @@ public:
 	}
 
 public:
-	inline void initial(ModelParams& params, HyperParams& hyparams, AlignedMemoryPool* mem){
+	inline void initial(ModelParams& params, HyperParams& hyparams){
 		int length = char_inputs.size();
 		for (int idx = 0; idx < length; idx++){
 			char_inputs[idx].setParam(&params.char_table);
@@ -42,16 +42,16 @@ public:
 			char_tanh_conv[idx].setParam(&params.char_tanh_conv);
 		}
 
-		char_window.init(hyparams.char_repsentation_dim, hyparams.char_context, mem);
-		char_left_lstm.init(&params.char_left_lstm, hyparams.dropProb, true, mem);
-		char_right_lstm.init(&params.char_right_lstm, hyparams.dropProb, false, mem);
+		char_window.init(hyparams.char_repsentation_dim, hyparams.char_context);
+		char_left_lstm.init(&params.char_left_lstm, hyparams.dropProb, true);
+		char_right_lstm.init(&params.char_right_lstm, hyparams.dropProb, false);
 
 		for (int idx = 0; idx < length; idx++) {
-			char_inputs[idx].init(hyparams.char_dim, hyparams.dropProb, mem);
-			bichar_inputs[idx].init(hyparams.bichar_dim, hyparams.dropProb, mem);
-			chartype_inputs[idx].init(hyparams.chartype_dim, hyparams.dropProb, mem);
-			char_represents[idx].init(hyparams.char_repsentation_dim, -1, mem);
-			char_tanh_conv[idx].init(hyparams.char_hidden_dim, hyparams.dropProb, mem);
+			char_inputs[idx].init(hyparams.char_dim, hyparams.dropProb);
+			bichar_inputs[idx].init(hyparams.bichar_dim, hyparams.dropProb);
+			chartype_inputs[idx].init(hyparams.chartype_dim, hyparams.dropProb);
+			char_represents[idx].init(hyparams.char_repsentation_dim, -1);
+			char_tanh_conv[idx].init(hyparams.char_hidden_dim, hyparams.dropProb);
 		}
 	}
 
