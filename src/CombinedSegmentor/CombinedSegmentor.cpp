@@ -357,7 +357,7 @@ void Segmentor::train(const string& trainFile, const string& devFile, const stri
 				eval.correct_label_count += m_driver._eval.correct_label_count;
 
 				if ((curUpdateIter + 1) % (m_options.verboseIter) == 0) {
-					std::cout << "current: " << iter + 1 << ", Cost = " << cost << ", Correct(%) = " << eval.getAccuracy() << std::endl;
+					std::cout << "current: " << curUpdateIter + 1 << ", Cost = " << cost << ", Correct(%) = " << eval.getAccuracy() << std::endl;
 					eval.reset();
 				}
 
