@@ -159,8 +159,8 @@ public:
 		static int ac_num;
 		ac_num = actions.size();
 
-		last2_action_input.forward(cg, atomFeat.str_2AC);
-		last_action_input.forward(cg, atomFeat.str_1AC);
+		last2_action_input.forward(cg, normalize_to_lowerwithdigit(atomFeat.str_2AC));
+		last_action_input.forward(cg, normalize_to_lowerwithdigit(atomFeat.str_1AC));
 		action_conv.forward(cg, &last2_action_input, &last_action_input);
 		action_lstm.forward(cg, &action_conv, atomFeat.p_action_lstm);
 
