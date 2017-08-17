@@ -9,6 +9,7 @@
 #define SRC_ActionedNodes_H_
 
 #include "ModelParams.h"
+#include "Utf.h"
 #include "AtomFeatures.h"
 #include "Action.h"
 
@@ -87,8 +88,8 @@ public:
 		action_conv.forward(cg, &last2_action_input, &last_action_input);
 		action_lstm.forward(cg, &action_conv, atomFeat.p_action_lstm);
 
-		last2_word_input.forward(cg, atomFeat.str_2W);
-		last_word_input.forward(cg, atomFeat.str_1W);
+		last2_word_input.forward(cg, normalize_to_lowerwithdigit(atomFeat.str_2W));
+		last_word_input.forward(cg, normalize_to_lowerwithdigit(atomFeat.str_1W));
 		word_conv.forward(cg, &last2_word_input, &last_word_input);
 		word_lstm.forward(cg, &word_conv, atomFeat.p_word_lstm);
 
