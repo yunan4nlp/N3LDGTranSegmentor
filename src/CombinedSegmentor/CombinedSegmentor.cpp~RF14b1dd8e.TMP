@@ -304,8 +304,6 @@ void Segmentor::train(const string& trainFile, const string& devFile, const stri
 	}
 	cout << inputSize << std::endl;
 	int batchBlock = inputSize / m_options.batchSize;
-	if (inputSize % m_options.batchSize != 0)
-		batchBlock++;
 
 	m_driver._modelparams.setFixed(m_options.base);
 
@@ -339,26 +337,26 @@ void Segmentor::train(const string& trainFile, const string& devFile, const stri
 		}
 		else{
 			if (iter == 0)eval.reset();
-			bEvaluate = true;
+
 			for (int updateIter = 0; updateIter < batchBlock; updateIter++) {
 				subInstances.clear();
 				subInstGoldActions.clear();
 				int start_pos = updateIter * m_options.batchSize;
 				int end_pos = (updateIter + 1) * m_options.batchSize;
-				if (end_pos > inputSize)
-					end_pos = inputSize;
+
 				for (int idy = start_pos; idy < end_pos; idy++) {
 					subInstances.push_back(trainInsts[indexes[idy]].chars);
 					subInstGoldActions.push_back(trainInstGoldactions[indexes[idy]]);
 				}
 				double cost = m_driver.train(subInstances, subInstGoldActions);
-				int curUpdateIter = iter * batchBlock + updateIter;
+
 				eval.overall_label_count += m_driver._eval.overall_label_count;
 				eval.correct_label_count += m_driver._eval.correct_label_count;
 
-				if ((curUpdateIter + 1) % (m_options.verboseIter) == 0) {
+				if ((iter + 1) % (m_options.verboseIter) == 0) {
 					std::cout << "current: " << iter + 1 << ", Cost = " << cost << ", Correct(%) = " << eval.getAccuracy() << std::endl;
 					eval.reset();
+					bEvaluate = true;
 				}
 
 				m_driver.updateModel();
