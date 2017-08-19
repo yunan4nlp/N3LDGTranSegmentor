@@ -94,17 +94,9 @@ public:
 		word_lstm.forward(cg, &word_conv, atomFeat.p_word_lstm);
 
 		bucket.forward(cg, 0);
-		PNode P_char_left_lstm, P_char_right_lstm;
-		if (atomFeat.next_position >= 0) {
-			P_char_left_lstm = &(atomFeat.p_char_left_lstm->_hiddens[atomFeat.next_position]);
-			P_char_right_lstm = &(atomFeat.p_char_right_lstm->_hiddens[atomFeat.next_position]);
-		}
-		else {
-			P_char_left_lstm = &bucket;
-			P_char_right_lstm = &bucket;
-		}
-		//PNode P_char_left_lstm = atomFeat.next_position >= 0 ? &(atomFeat.p_char_left_lstm->_hiddens[atomFeat.next_position]) : &bucket;
-		//PNode P_char_right_lstm = atomFeat.next_position >= 0 ? &(atomFeat.p_char_right_lstm->_hiddens[atomFeat.next_position]) : &bucket;
+
+		PNode P_char_left_lstm = atomFeat.next_position >= 0 ? (Node *)&(atomFeat.p_char_left_lstm->_hiddens[atomFeat.next_position]) : (Node *)&bucket;
+		PNode P_char_right_lstm = atomFeat.next_position >= 0 ? (Node *)&(atomFeat.p_char_right_lstm->_hiddens[atomFeat.next_position]) : (Node *)&bucket;
 
 
 		for (int idx = 0; idx < ac_num; idx++){
