@@ -127,11 +127,8 @@ private:
 
 			if (pGoldNode != pBestNode) {
 				pGoldNode->loss[0] = -1.0 / num;
-
 				pBestNode->loss[0] = 1.0 / num;
-
 				cost += 1.0;
-				continue;
 			}
 		}
 		return cost;

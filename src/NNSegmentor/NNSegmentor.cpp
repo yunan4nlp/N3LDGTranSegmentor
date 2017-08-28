@@ -43,7 +43,7 @@ int Segmentor::createAlphabet(const vector<Instance>& vecInsts) {
 	for (numInstance = 0; numInstance < vecInsts.size(); numInstance++) {
 		const Instance &instance = vecInsts[numInstance];
 		for (int idx = 0; idx < instance.wordsize(); idx++) {
-			word_stat[normalize_to_lowerwithdigit(instance.words[idx])]++;
+			word_stat[instance.words[idx]]++;
 		}
 		for (int idx = 0; idx < instance.charsize(); idx++) {
 			char_stat[instance.chars[idx]]++;
@@ -434,16 +434,7 @@ void Segmentor::test(const string& testFile, const string& outputFile, const str
 	}
 	std::cout << "test:" << std::endl;
 	metric_test.print();
-
-	std::ofstream os(outputFile.c_str());
-
-	for (int idx = 0; idx < testInsts.size(); idx++) {
-		for (int idy = 0; idy < testInstResults[idx].size(); idy++){
-			os << testInstResults[idx][idy] << " ";
-		}
-		os << std::endl;
-	}
-	os.close();
+	m_pipe.outputAllInstances(outputFile, testInstResults);
 }
 
 

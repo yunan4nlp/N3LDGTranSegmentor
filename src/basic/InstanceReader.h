@@ -41,7 +41,7 @@ public:
 
     m_instance.allocate(wordInfo.size(), charInfo.size());
     for (int i = 0; i < wordInfo.size(); ++i) {
-      m_instance.words[i] = wordInfo[i];
+      m_instance.words[i] = normalize_to_lowerwithdigit(wordInfo[i]);
     }
     for (int i = 0; i < charInfo.size(); ++i) {
       m_instance.chars[i] = charInfo[i];
